@@ -1,6 +1,6 @@
 
 from rest_framework import serializers
-from .models import User, Team, Room, Booking
+from .models import User, Team, Room, Booking, Timeslot
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -24,11 +24,12 @@ class RoomSerializer(serializers.ModelSerializer):
 class BookingSerializer(serializers.ModelSerializer):
     user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), required=False)
     team = serializers.PrimaryKeyRelatedField(queryset=Team.objects.all(), required=False)
+    time_slot = serializers.PrimaryKeyRelatedField(queryset=Timeslot.objects.all())
 
     class Meta:
         model = Booking
         fields = [
-            'id', 'room', 'date', 'start_time', 'end_time',
+            'id', 'room', 'date', 'time_slot',
             'user', 'team', 'timestamp', 'is_active'
         ]
         read_only_fields = ['id', 'timestamp', 'is_active']

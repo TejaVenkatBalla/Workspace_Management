@@ -69,7 +69,7 @@ class Room(models.Model):
     )
     name = models.CharField(max_length=100)
     room_type = models.CharField(max_length=20, choices=ROOM_TYPES)
-    capacity = models.PositiveIntegerField()
+    capacity = models.PositiveIntegerField(null=True, blank=True)
 
     def __str__(self):
         return f"{self.name} ({self.room_type})"
@@ -77,20 +77,44 @@ class Room(models.Model):
 # ----------------------
 # Booking Model
 # ----------------------
+class Timeslot(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    start_time = models.TimeField()
+    end_time = models.TimeField()
+
+    def __str__(self):
+        return f"{self.start_time} - {self.end_time}"
+
 class Booking(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     room = models.ForeignKey(Room, on_delete=models.CASCADE)
     date = models.DateField()
-    start_time = models.TimeField()
-    end_time = models.TimeField()
+    time_slot = models.ForeignKey(Timeslot, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)  # for private/shared
     team = models.ForeignKey(Team, on_delete=models.CASCADE, null=True, blank=True)  # for conference
     timestamp = models.DateTimeField(auto_now_add=True)
     is_active = models.BooleanField(default=True)
 
+    class Meta:
+        constraints = [
+            models.CheckConstraint(
+                check=models.Q(user__isnull=False) | models.Q(team__isnull=False),
+                name='booking_must_have_user_or_team'
+            ),
+            models.CheckConstraint(
+                check=~(models.Q(user__isnull=False) & models.Q(team__isnull=False)),
+                name='booking_cannot_have_both_user_and_team'
+            ),
+            models.UniqueConstraint(
+                fields=['room', 'date', 'time_slot'],
+                condition=models.Q(is_active=True),
+                name='unique_active_booking_per_slot'
+            )
+        ]
+
     def __str__(self):
         if self.user:
-            return f"Booking by {self.user.name} on {self.date} ({self.start_time}-{self.end_time})"
+            return f"Booking by {self.user.name} on {self.date} ({self.time_slot})"
         elif self.team:
-            return f"Booking by team {self.team.name} on {self.date} ({self.start_time}-{self.end_time})"
-        return f"Booking on {self.date} ({self.start_time}-{self.end_time})"
+            return f"Booking by team {self.team.name} on {self.date} ({self.time_slot})"
+        return f"Booking on {self.date} ({self.time_slot})"

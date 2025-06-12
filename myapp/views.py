@@ -1,18 +1,23 @@
 from rest_framework import generics, status
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, AllowAny, BasePermission
-from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.tokens import RefreshToken
-from django.contrib.auth import get_user_model
 from django.db import transaction
-from django.utils.timezone import now
 from rest_framework.views import APIView
-from .models import Room, Booking, Team, User
-from .serializers import (
-    BookingSerializer, BookingListSerializer, RoomSerializer,
-    UserSerializer
-)
-from datetime import timedelta
+from .models import *
+from .serializers import *
+class SignupView(APIView):
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        serializer = UserSignupSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.save()
+        refresh = RefreshToken.for_user(user)
+        return Response({
+            'refresh': str(refresh),
+            'access': str(refresh.access_token),
+        })
 
 # Custom permission class to restrict admin-only views
 class IsAdmin(BasePermission):
@@ -20,13 +25,12 @@ class IsAdmin(BasePermission):
         return request.user and request.user.role == 'admin'
 
 # Utility for conflict check
-def has_booking_conflict(room, date, start, end):
+def has_booking_conflict(room, date, time_slot):
     return Booking.objects.filter(
         room=room,
         date=date,
-        is_active=True,
-        start_time__lt=end,
-        end_time__gt=start
+        time_slot=time_slot,
+        is_active=True
     ).exists()
 
 # Utility to calculate headcount
@@ -48,10 +52,9 @@ class BookingCreateView(APIView):
 
         room = data['room']
         date = data['date']
-        start = data['start_time']
-        end = data['end_time']
+        time_slot = data['time_slot']
 
-        if has_booking_conflict(room, date, start, end):
+        if has_booking_conflict(room, date, time_slot):
             return Response({"error": "No available room for the selected slot and type."}, status=400)
 
         if room.room_type == 'conference':
@@ -69,7 +72,7 @@ class BookingCreateView(APIView):
         elif room.room_type == 'shared':
             existing_shared = Booking.objects.filter(
                 room=room, date=date,
-                start_time__lt=end, end_time__gt=start,
+                time_slot=time_slot,
                 is_active=True
             ).count()
             if existing_shared >= 4:
@@ -83,7 +86,6 @@ class BookingCreateView(APIView):
             booking = serializer.save(user=request.user)
 
         return Response({"booking_id": booking.id}, status=201)
-
 
 class BookingCancelView(APIView):
     permission_classes = [IsAuthenticated]
@@ -113,41 +115,52 @@ class BookingListView(generics.ListAPIView):
     def get_queryset(self):
         return Booking.objects.filter(is_active=True)
 
-class AvailableRoomsView(APIView):
+from rest_framework import generics
+
+class AvailableRoomsByDateView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
         date = request.query_params.get('date')
-        start = request.query_params.get('start_time')
-        end = request.query_params.get('end_time')
 
-        if not all([date, start, end]):
-            return Response({"error": "Missing date/start_time/end_time in query params."}, status=400)
+        if not date:
+            return Response({"error": "Missing date in query params."}, status=400)
 
         booked_rooms = Booking.objects.filter(
             date=date,
-            is_active=True,
-            start_time__lt=end,
-            end_time__gt=start
+            is_active=True
         ).values_list('room_id', flat=True)
 
         available_rooms = Room.objects.exclude(id__in=booked_rooms)
         serializer = RoomSerializer(available_rooms, many=True)
         return Response(serializer.data)
 
+class AvailableSlotsByRoomDateView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        room_id = request.query_params.get('room')
+        date = request.query_params.get('date')
+
+        if not all([room_id, date]):
+            return Response({"error": "Missing room or date in query params."}, status=400)
+
+        try:
+            room = Room.objects.get(id=room_id)
+        except Room.DoesNotExist:
+            return Response({"error": "Invalid room."}, status=400)
+
+        booked_slots = Booking.objects.filter(
+            room=room,
+            date=date,
+            is_active=True
+        ).values_list('time_slot_id', flat=True)
+
+        available_slots = Timeslot.objects.exclude(id__in=booked_slots)
+        slots_data = [{"id": slot.id, "start_time": slot.start_time, "end_time": slot.end_time} for slot in available_slots]
+
+        return Response(slots_data)
 
 
-from .serializers import UserSignupSerializer
 
-class SignupView(APIView):
-    permission_classes = [AllowAny]
 
-    def post(self, request):
-        serializer = UserSignupSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        user = serializer.save()
-        refresh = RefreshToken.for_user(user)
-        return Response({
-            'refresh': str(refresh),
-            'access': str(refresh.access_token),
-        })
