@@ -6,7 +6,8 @@ from django.db import transaction
 from rest_framework.views import APIView
 from .models import *
 from .serializers import *
-
+from rest_framework import generics
+from datetime import date as dt_date
 class SignupView(APIView):
     permission_classes = [AllowAny]
 
@@ -58,6 +59,8 @@ class BookingCreateView(APIView):
         # Check if user or team already has an active booking for the same date and time_slot
         user = request.user
         team = data.get('team')
+        if not time_slot:
+            return Response({"error": "Missing time_slot in request data."}, status=400)
 
         if isinstance(room, Room) and has_booking_conflict(room, date, time_slot):
             return Response({"error": "Room is already booked for the selected date and time slot."}, status=400)
@@ -130,76 +133,66 @@ class BookingListView(generics.ListAPIView):
         else:
             #return Booking.objects.filter(user=user, is_active=True)
             return Booking.objects.filter(models.Q(user=user) | models.Q(team__members=user), is_active=True).distinct()
-from rest_framework import generics
-
-from datetime import date as dt_date
 
 class AvailableRoomsAndSlotsByDateView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
         date = request.query_params.get('date')
-        time_slot_id = request.query_params.get('time_slot')
-        #team_id = request.query_params.get('team_id')
         room_type = request.query_params.get('room_type')
-
-        if not time_slot_id:
-            return Response({"error": "Missing time_slot in query params."}, status=400)
 
         if not date:
             date = dt_date.today()
-
-        try:
-            time_slot = Timeslot.objects.get(id=time_slot_id)
-        except Timeslot.DoesNotExist:
-            return Response({"error": "Invalid time_slot."}, status=400)
-
 
         if room_type:
             rooms = Room.objects.filter(room_type=room_type)
         else:
             rooms = Room.objects.exclude(room_type='shared')
 
-        # Filter rooms that are not booked for the given date and time_slot
-        booked_rooms = Booking.objects.filter(
-            date=date,
-            time_slot=time_slot,
-            is_active=True
-        ).values_list('room_id', flat=True)
+        all_time_slots = Timeslot.objects.all()
 
-        available_rooms = rooms.exclude(id__in=booked_rooms)
-
-        # For shared desks, check if they have availability (max 4 bookings)
-        if not room_type or room_type == 'shared':
-            shared_rooms = Room.objects.filter(room_type='shared')
-            available_shared_rooms = []
-            for room in shared_rooms:
-                booking_count = Booking.objects.filter(
-                    room=room,
-                    date=date,
-                    time_slot=time_slot,
-                    is_active=True
-                ).count()
-                if booking_count < 4:
-                    available_shared_rooms.append(room)
-            available_rooms = list(available_rooms) + available_shared_rooms
-
-        # Return rooms with the single requested time slot as available
         result = []
-        for room in available_rooms:
-            result.append({
-                "room": {
-                    "id": room.id,
-                    "name": room.name,
-                    "room_type": room.room_type,
-                    "capacity": room.capacity,
-                },
-                "available_slots": [{
-                    "id": time_slot.id,
-                    "start_time": time_slot.start_time,
-                    "end_time": time_slot.end_time
-                }]
-            })
+
+        for room in rooms:
+            available_slots = []
+            for time_slot in all_time_slots:
+                if room.room_type == 'shared':
+                    booking_count = Booking.objects.filter(
+                        room=room,
+                        date=date,
+                        time_slot=time_slot,
+                        is_active=True
+                    ).count()
+                    if booking_count < 4:
+                        available_slots.append({
+                            "id": time_slot.id,
+                            "start_time": time_slot.start_time,
+                            "end_time": time_slot.end_time
+                        })
+                else:
+                    is_booked = Booking.objects.filter(
+                        room=room,
+                        date=date,
+                        time_slot=time_slot,
+                        is_active=True
+                    ).exists()
+                    if not is_booked:
+                        available_slots.append({
+                            "id": time_slot.id,
+                            "start_time": time_slot.start_time,
+                            "end_time": time_slot.end_time
+                        })
+
+            if available_slots:
+                result.append({
+                    "room": {
+                        "id": room.id,
+                        "name": room.name,
+                        "room_type": room.room_type,
+                        "capacity": room.capacity,
+                    },
+                    "available_slots": available_slots
+                })
 
         return Response(result)
 

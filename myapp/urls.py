@@ -10,9 +10,7 @@ urlpatterns = [
     path('bookings/', BookingCreateView.as_view(), name='create-booking'),
     path('cancel/<uuid:booking_id>/', BookingCancelView.as_view(), name='cancel-booking'),
     path('bookings/list/', BookingListView.as_view(), name='booking-list'),
-    # Deprecated old endpoints
-    # path('rooms/available/', AvailableRoomsByDateView.as_view(), name='available-rooms-by-date'),
-    # path('slots/available/', AvailableSlotsByRoomDateView.as_view(), name='available-slots-by-room-date'),
+    
     path('rooms/available/', AvailableRoomsAndSlotsByDateView.as_view(), name='available-rooms-slots'),
 
     # Team CRUD APIs
