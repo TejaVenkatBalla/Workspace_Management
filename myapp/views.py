@@ -6,6 +6,7 @@ from django.db import transaction
 from rest_framework.views import APIView
 from .models import *
 from .serializers import *
+
 class SignupView(APIView):
     permission_classes = [AllowAny]
 
@@ -54,36 +55,47 @@ class BookingCreateView(APIView):
         date = data['date']
         time_slot = data['time_slot']
 
-        if has_booking_conflict(room, date, time_slot):
-            return Response({"error": "No available room for the selected slot and type."}, status=400)
+        # Check if user or team already has an active booking for the same date and time_slot
+        user = request.user
+        team = data.get('team')
 
-        if room.room_type == 'conference':
-            team = data.get('team')
+        if isinstance(room, Room) and has_booking_conflict(room, date, time_slot):
+            return Response({"error": "Room is already booked for the selected date and time slot."}, status=400)
+        
+        if team and room.room_type != 'conference':
+            return Response({"error": "Team can only book conference rooms."}, status=400)
+        
+        elif room.room_type == 'conference':
             if not team:
                 return Response({"error": "Team required for conference room."}, status=400)
             if team_seat_count(team) < 3:
                 return Response({"error": "Team must have at least 3 members (age >= 10)."}, status=400)
-            if request.user != team.created_by:
+            if user != team.created_by: # Only team lead can book conference rooms
                 return Response({"error": "Only team lead can book conference rooms."}, status=403)
 
-            # ✅ Save with team + user
-            booking = serializer.save(team=team, user=request.user)
+            booking = serializer.save(team=team)
 
         elif room.room_type == 'shared':
-            existing_shared = Booking.objects.filter(
-                room=room, date=date,
-                time_slot=time_slot,
-                is_active=True
-            ).count()
-            if existing_shared >= 4:
+            # Find a shared desk room with availability
+            shared_rooms = Room.objects.filter(room_type='shared')
+            assigned_room = None
+            for shared_room in shared_rooms:
+                booking_count = Booking.objects.filter(
+                    room=shared_room,
+                    date=date,
+                    time_slot=time_slot,
+                    is_active=True
+                ).count()
+                if booking_count < 4:
+                    assigned_room = shared_room
+                    break
+            if not assigned_room:
                 return Response({"error": "No available shared desk for the selected slot."}, status=400)
 
-            # ✅ Save with user only
-            booking = serializer.save(user=request.user)
+            booking = serializer.save(user=user, room=assigned_room)
 
         elif room.room_type == 'private':
-            # ✅ Save with user only
-            booking = serializer.save(user=request.user)
+            booking = serializer.save(user=user)
 
         return Response({"booking_id": booking.id}, status=201)
 
@@ -101,65 +113,216 @@ class BookingCancelView(APIView):
             if booking.team.created_by != request.user:
                 return Response({"error": "Only team lead can cancel this booking."}, status=403)
         else:
-            if booking.user != request.user:
-                return Response({"error": "Only the booking user can cancel this booking."}, status=403)
+            return Response({"error": "Only the booking user can cancel this booking."}, status=403)
 
         booking.is_active = False
         booking.save()
         return Response({"success": "Booking cancelled."})
 
 class BookingListView(generics.ListAPIView):
-    permission_classes = [IsAuthenticated, IsAdmin]
+    permission_classes = [IsAuthenticated]
     serializer_class = BookingListSerializer
 
     def get_queryset(self):
-        return Booking.objects.filter(is_active=True)
-
+        user = self.request.user
+        if user.role == 'admin':
+            return Booking.objects.filter(is_active=True)
+        else:
+            #return Booking.objects.filter(user=user, is_active=True)
+            return Booking.objects.filter(models.Q(user=user) | models.Q(team__members=user), is_active=True).distinct()
 from rest_framework import generics
 
-class AvailableRoomsByDateView(APIView):
+from datetime import date as dt_date
+
+class AvailableRoomsAndSlotsByDateView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
         date = request.query_params.get('date')
+        time_slot_id = request.query_params.get('time_slot')
+        #team_id = request.query_params.get('team_id')
+        room_type = request.query_params.get('room_type')
+
+        if not time_slot_id:
+            return Response({"error": "Missing time_slot in query params."}, status=400)
 
         if not date:
-            return Response({"error": "Missing date in query params."}, status=400)
+            date = dt_date.today()
 
+        try:
+            time_slot = Timeslot.objects.get(id=time_slot_id)
+        except Timeslot.DoesNotExist:
+            return Response({"error": "Invalid time_slot."}, status=400)
+
+
+        if room_type:
+            rooms = Room.objects.filter(room_type=room_type)
+        else:
+            rooms = Room.objects.exclude(room_type='shared')
+
+        # Filter rooms that are not booked for the given date and time_slot
         booked_rooms = Booking.objects.filter(
             date=date,
+            time_slot=time_slot,
             is_active=True
         ).values_list('room_id', flat=True)
 
-        available_rooms = Room.objects.exclude(id__in=booked_rooms)
-        serializer = RoomSerializer(available_rooms, many=True)
-        return Response(serializer.data)
+        available_rooms = rooms.exclude(id__in=booked_rooms)
 
-class AvailableSlotsByRoomDateView(APIView):
+        # For shared desks, check if they have availability (max 4 bookings)
+        if not room_type or room_type == 'shared':
+            shared_rooms = Room.objects.filter(room_type='shared')
+            available_shared_rooms = []
+            for room in shared_rooms:
+                booking_count = Booking.objects.filter(
+                    room=room,
+                    date=date,
+                    time_slot=time_slot,
+                    is_active=True
+                ).count()
+                if booking_count < 4:
+                    available_shared_rooms.append(room)
+            available_rooms = list(available_rooms) + available_shared_rooms
+
+        # Return rooms with the single requested time slot as available
+        result = []
+        for room in available_rooms:
+            result.append({
+                "room": {
+                    "id": room.id,
+                    "name": room.name,
+                    "room_type": room.room_type,
+                    "capacity": room.capacity,
+                },
+                "available_slots": [{
+                    "id": time_slot.id,
+                    "start_time": time_slot.start_time,
+                    "end_time": time_slot.end_time
+                }]
+            })
+
+        return Response(result)
+
+# Team CRUD views
+class TeamListCreateView(generics.ListCreateAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = TeamSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        if user.role == 'admin':
+            return Team.objects.all()
+        # Users can see teams they created or are members of
+        return Team.objects.filter(models.Q(created_by=user) | models.Q(members=user)).distinct()
+        #return Team.objects.all()
+    def perform_create(self, serializer):
+        serializer.save(created_by=self.request.user)
+
+class TeamRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = TeamSerializer
+    lookup_field = 'id'
+
+    def get_queryset(self):
+        user = self.request.user
+        if user.role == 'admin':
+            return Team.objects.all()
+        # Users can only update/delete teams they created
+        return Team.objects.filter(created_by=user)
+
+# API for user to join a team
+class JoinTeamView(APIView):
     permission_classes = [IsAuthenticated]
 
-    def get(self, request):
-        room_id = request.query_params.get('room')
-        date = request.query_params.get('date')
+    def post(self, request, team_id):
+        user = request.user
+        try:
+            team = Team.objects.get(id=team_id)
+        except Team.DoesNotExist:
+            return Response({"error": "Team not found."}, status=404)
 
-        if not all([room_id, date]):
-            return Response({"error": "Missing room or date in query params."}, status=400)
+        if user in team.members.all():
+            return Response({"message": "User already a member of the team."}, status=200)
+
+        team.members.add(user)
+        team.save()
+        return Response({"message": "User added to the team."}, status=200)
+
+# API for admin to add any user to any team
+class AdminAddUserToTeamView(APIView):
+    permission_classes = [IsAuthenticated, IsAdmin]
+
+    def post(self, request):
+        team_id = request.data.get('team_id')
+        user_id = request.data.get('user_id')
+
+        if not team_id or not user_id:
+            return Response({"error": "team_id and user_id are required."}, status=400)
 
         try:
-            room = Room.objects.get(id=room_id)
-        except Room.DoesNotExist:
-            return Response({"error": "Invalid room."}, status=400)
+            team = Team.objects.get(id=team_id)
+        except Team.DoesNotExist:
+            return Response({"error": "Team not found."}, status=404)
 
-        booked_slots = Booking.objects.filter(
-            room=room,
-            date=date,
-            is_active=True
-        ).values_list('time_slot_id', flat=True)
+        try:
+            user = User.objects.get(id=user_id)
+        except User.DoesNotExist:
+            return Response({"error": "User not found."}, status=404)
 
-        available_slots = Timeslot.objects.exclude(id__in=booked_slots)
-        slots_data = [{"id": slot.id, "start_time": slot.start_time, "end_time": slot.end_time} for slot in available_slots]
+        if user in team.members.all():
+            return Response({"message": "User already a member of the team."}, status=200)
 
-        return Response(slots_data)
+        team.members.add(user)
+        team.save()
+        return Response({"message": "User added to the team by admin."}, status=200)
+
+# Admin CRUD views for User
+class UserListCreateView(generics.ListCreateAPIView):
+    permission_classes = [IsAuthenticated, IsAdmin]
+    serializer_class = UserSerializer
+
+    def get_queryset(self):
+        return User.objects.all()
+
+class UserRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = [IsAuthenticated, IsAdmin]
+    serializer_class = UserSerializer
+    lookup_field = 'id'
+
+    def get_queryset(self):
+        return User.objects.all()
+
+# Admin CRUD views for Room
+class RoomListCreateView(generics.ListCreateAPIView):
+    permission_classes = [IsAuthenticated, IsAdmin]
+    serializer_class = RoomSerializer
+
+    def get_queryset(self):
+        return Room.objects.all()
+
+class RoomRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = [IsAuthenticated, IsAdmin]
+    serializer_class = RoomSerializer
+    lookup_field = 'id'
+
+    def get_queryset(self):
+        return Room.objects.all()
+
+# Admin CRUD views for Timeslot
+class TimeslotListCreateView(generics.ListCreateAPIView):
+    permission_classes = [IsAuthenticated, IsAdmin]
+    serializer_class = TimeslotSerializer
+
+    def get_queryset(self):
+        return Timeslot.objects.all()
+
+class TimeslotRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = [IsAuthenticated, IsAdmin]
+    serializer_class = TimeslotSerializer
+    lookup_field = 'id'
+
+    def get_queryset(self):
+        return Timeslot.objects.all()
 
 
 

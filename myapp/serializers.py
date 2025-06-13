@@ -21,6 +21,12 @@ class RoomSerializer(serializers.ModelSerializer):
         model = Room
         fields = ['id', 'name', 'room_type', 'capacity']
 
+class TimeslotSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Timeslot
+        fields = ['id', 'start_time', 'end_time']
+        read_only_fields = ['id']
+
 class BookingSerializer(serializers.ModelSerializer):
     user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), required=False)
     team = serializers.PrimaryKeyRelatedField(queryset=Team.objects.all(), required=False)
