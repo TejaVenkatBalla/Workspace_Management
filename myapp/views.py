@@ -8,6 +8,10 @@ from .models import *
 from .serializers import *
 from rest_framework import generics
 from datetime import date as dt_date
+from rest_framework.pagination import PageNumberPagination
+from rest_framework.response import Response
+
+
 class SignupView(APIView):
     """
     API view to handle user signup and JWT token generation.
@@ -212,9 +216,6 @@ class BookingListView(generics.ListAPIView):
         else:
             #return Booking.objects.filter(user=user, is_active=True)
             return Booking.objects.filter(models.Q(user=user) | models.Q(team__members=user), is_active=True).distinct()
-
-from rest_framework.pagination import PageNumberPagination
-from rest_framework.response import Response
 
 class AvailableRoomsAndSlotsByDateView(APIView):
     """

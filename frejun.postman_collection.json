@@ -1,0 +1,1245 @@
+{
+	"info": {
+		"_postman_id": "9bd4c358-b164-4f54-9f8e-7bba42c9921f",
+		"name": "frejun",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "26355580",
+		"_collection_link": "https://web.postman.co/workspace/My-Workspace~bd93a4f1-1ab7-4bb9-85fc-cb5c73c64225/collection/26355580-9bd4c358-b164-4f54-9f8e-7bba42c9921f?action=share&source=collection_link&creator=26355580"
+	},
+	"item": [
+		{
+			"name": "register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"demo_user\",\r\n  \"email\": \"demouser@gm.com\",\r\n  \"password\": \"admin123\",\r\n  \"age\": 23,\r\n  \"gender\": \"male\",\r\n  \"role\": \"admin\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/v1/signup/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"signup",
+						""
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "register",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"demo_user\",\r\n  \"email\": \"demouser@gm.com\",\r\n  \"password\": \"admin123\",\r\n  \"age\": 23,\r\n  \"gender\": \"male\",\r\n  \"role\": \"admin\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/v1/signup/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"v1",
+								"signup",
+								""
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Fri, 13 Jun 2025 06:05:22 GMT"
+						},
+						{
+							"key": "Server",
+							"value": "WSGIServer/0.2 CPython/3.13.5"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept"
+						},
+						{
+							"key": "Allow",
+							"value": "POST, OPTIONS"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Length",
+							"value": "483"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "Referrer-Policy",
+							"value": "same-origin"
+						},
+						{
+							"key": "Cross-Origin-Opener-Policy",
+							"value": "same-origin"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"refresh\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1MDM5OTUyMSwiaWF0IjoxNzQ5Nzk0NzIxLCJqdGkiOiI0YTJlNGNiN2E0ZDQ0ZDhjYTQ2M2Q3ZmVkMDg1MzlkNCIsInVzZXJfaWQiOjV9.AKvE7arpOOsgYIByz6zuHkCQm1ja5L56Y4WLguVcC6g\",\n    \"access\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ5ODEyNzIxLCJpYXQiOjE3NDk3OTQ3MjEsImp0aSI6ImFjOTY4NDdmYzE0ZTQxZDJiZTUxYWZmZWE2ODExYjk2IiwidXNlcl9pZCI6NX0.FJ_-RdiKW3XSHMpz7xWQ9hehTQk-6R3766EsmvByUMk\"\n}"
+				}
+			]
+		},
+		{
+			"name": "login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"demo_user\",\r\n    \"password\": \"admin123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/v1/login/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"login",
+						""
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "New Request",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"demo_user\",\r\n    \"password\": \"admin123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/v1/login/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"v1",
+								"login",
+								""
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Fri, 13 Jun 2025 06:05:50 GMT"
+						},
+						{
+							"key": "Server",
+							"value": "WSGIServer/0.2 CPython/3.13.5"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept"
+						},
+						{
+							"key": "Allow",
+							"value": "POST, OPTIONS"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Length",
+							"value": "483"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "Referrer-Policy",
+							"value": "same-origin"
+						},
+						{
+							"key": "Cross-Origin-Opener-Policy",
+							"value": "same-origin"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"refresh\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1MDM5OTU1MCwiaWF0IjoxNzQ5Nzk0NzUwLCJqdGkiOiJiZGFlNjk2Mzk5Y2I0MmVhOWIzZDhlY2I1NjlmNzdmZCIsInVzZXJfaWQiOjV9.g1QxrRM1C3lxcXLx22lT0Vp8qtKC4nv5RA61-u8A5ho\",\n    \"access\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ5ODEyNzUwLCJpYXQiOjE3NDk3OTQ3NTAsImp0aSI6IjQzZjA1NmZkMzZjNTRiYjA4ODcwM2Q4ODhiMzI1ZTg3IiwidXNlcl9pZCI6NX0.qMWsysglnKv8lf3Bux471LdMCXJmAVT3c_8Z1_GfXoE\"\n}"
+				}
+			]
+		},
+		{
+			"name": "avaiable rooms",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ5ODEyNzUwLCJpYXQiOjE3NDk3OTQ3NTAsImp0aSI6IjQzZjA1NmZkMzZjNTRiYjA4ODcwM2Q4ODhiMzI1ZTg3IiwidXNlcl9pZCI6NX0.qMWsysglnKv8lf3Bux471LdMCXJmAVT3c_8Z1_GfXoE",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/v1/rooms/available/?date=2025-06-15&page=1",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"rooms",
+						"available",
+						""
+					],
+					"query": [
+						{
+							"key": "date",
+							"value": "2025-06-15"
+						},
+						{
+							"key": "page",
+							"value": "1"
+						},
+						{
+							"key": "room_type",
+							"value": "private",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "avaiable rooms",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ5ODEyNzUwLCJpYXQiOjE3NDk3OTQ3NTAsImp0aSI6IjQzZjA1NmZkMzZjNTRiYjA4ODcwM2Q4ODhiMzI1ZTg3IiwidXNlcl9pZCI6NX0.qMWsysglnKv8lf3Bux471LdMCXJmAVT3c_8Z1_GfXoE",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/v1/rooms/available/?date=2025-06-15&page=1&room_type=private",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"v1",
+								"rooms",
+								"available",
+								""
+							],
+							"query": [
+								{
+									"key": "date",
+									"value": "2025-06-15"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "room_type",
+									"value": "private"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Fri, 13 Jun 2025 06:06:28 GMT"
+						},
+						{
+							"key": "Server",
+							"value": "WSGIServer/0.2 CPython/3.13.5"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept"
+						},
+						{
+							"key": "Allow",
+							"value": "GET, HEAD, OPTIONS"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Length",
+							"value": "5815"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "Referrer-Policy",
+							"value": "same-origin"
+						},
+						{
+							"key": "Cross-Origin-Opener-Policy",
+							"value": "same-origin"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"count\": 8,\n    \"next\": \"http://127.0.0.1:8000/api/v1/rooms/available/?date=2025-06-15&page=2&room_type=private\",\n    \"previous\": null,\n    \"results\": [\n        {\n            \"room\": {\n                \"id\": 46,\n                \"name\": \"Private Room 1\",\n                \"room_type\": \"private\",\n                \"capacity\": 1\n            },\n            \"available_slots\": [\n                {\n                    \"id\": \"ff760780-8fac-4d41-965d-ba2f7845cade\",\n                    \"name\": \"9am time slot\",\n                    \"start_time\": \"09:00:00\",\n                    \"end_time\": \"10:00:00\"\n                },\n                {\n                    \"id\": \"169bcd85-5b76-40e6-9de2-eb05af19a5fd\",\n                    \"name\": \"10am time slot\",\n                    \"start_time\": \"10:00:00\",\n                    \"end_time\": \"11:00:00\"\n                },\n                {\n                    \"id\": \"48106bd3-5810-42d0-8668-1d95a2cea87a\",\n                    \"name\": \"11am time slot\",\n                    \"start_time\": \"11:00:00\",\n                    \"end_time\": \"12:00:00\"\n                },\n                {\n                    \"id\": \"e849d724-a8a5-4f2f-b07a-a24d54e6edfc\",\n                    \"name\": \"12pm time slot\",\n                    \"start_time\": \"12:00:00\",\n                    \"end_time\": \"13:00:00\"\n                },\n                {\n                    \"id\": \"ddba17d5-9668-44ca-8540-0d7591798f03\",\n                    \"name\": \"1pm time slot\",\n                    \"start_time\": \"13:00:00\",\n                    \"end_time\": \"14:00:00\"\n                },\n                {\n                    \"id\": \"6b0515bb-ecac-4e90-9692-ed83aa69774a\",\n                    \"name\": \"2pm time slot\",\n                    \"start_time\": \"14:00:00\",\n                    \"end_time\": \"15:00:00\"\n                },\n                {\n                    \"id\": \"2a848e82-2b47-42e2-85b8-46d20fcb8f69\",\n                    \"name\": \"3pm time slot\",\n                    \"start_time\": \"15:00:00\",\n                    \"end_time\": \"16:00:00\"\n                },\n                {\n                    \"id\": \"7c111c00-3a45-45a7-9bc7-0233a0d1c85a\",\n                    \"name\": \"4pm time slot\",\n                    \"start_time\": \"16:00:00\",\n                    \"end_time\": \"17:00:00\"\n                },\n                {\n                    \"id\": \"744bcb61-2441-487c-a860-70db74b29c50\",\n                    \"name\": \"5pm time slot\",\n                    \"start_time\": \"17:00:00\",\n                    \"end_time\": \"18:00:00\"\n                }\n            ]\n        },\n        {\n            \"room\": {\n                \"id\": 47,\n                \"name\": \"Private Room 2\",\n                \"room_type\": \"private\",\n                \"capacity\": 1\n            },\n            \"available_slots\": [\n                {\n                    \"id\": \"ff760780-8fac-4d41-965d-ba2f7845cade\",\n                    \"name\": \"9am time slot\",\n                    \"start_time\": \"09:00:00\",\n                    \"end_time\": \"10:00:00\"\n                },\n                {\n                    \"id\": \"169bcd85-5b76-40e6-9de2-eb05af19a5fd\",\n                    \"name\": \"10am time slot\",\n                    \"start_time\": \"10:00:00\",\n                    \"end_time\": \"11:00:00\"\n                },\n                {\n                    \"id\": \"48106bd3-5810-42d0-8668-1d95a2cea87a\",\n                    \"name\": \"11am time slot\",\n                    \"start_time\": \"11:00:00\",\n                    \"end_time\": \"12:00:00\"\n                },\n                {\n                    \"id\": \"e849d724-a8a5-4f2f-b07a-a24d54e6edfc\",\n                    \"name\": \"12pm time slot\",\n                    \"start_time\": \"12:00:00\",\n                    \"end_time\": \"13:00:00\"\n                },\n                {\n                    \"id\": \"ddba17d5-9668-44ca-8540-0d7591798f03\",\n                    \"name\": \"1pm time slot\",\n                    \"start_time\": \"13:00:00\",\n                    \"end_time\": \"14:00:00\"\n                },\n                {\n                    \"id\": \"6b0515bb-ecac-4e90-9692-ed83aa69774a\",\n                    \"name\": \"2pm time slot\",\n                    \"start_time\": \"14:00:00\",\n                    \"end_time\": \"15:00:00\"\n                },\n                {\n                    \"id\": \"2a848e82-2b47-42e2-85b8-46d20fcb8f69\",\n                    \"name\": \"3pm time slot\",\n                    \"start_time\": \"15:00:00\",\n                    \"end_time\": \"16:00:00\"\n                },\n                {\n                    \"id\": \"7c111c00-3a45-45a7-9bc7-0233a0d1c85a\",\n                    \"name\": \"4pm time slot\",\n                    \"start_time\": \"16:00:00\",\n                    \"end_time\": \"17:00:00\"\n                },\n                {\n                    \"id\": \"744bcb61-2441-487c-a860-70db74b29c50\",\n                    \"name\": \"5pm time slot\",\n                    \"start_time\": \"17:00:00\",\n                    \"end_time\": \"18:00:00\"\n                }\n            ]\n        },\n        {\n            \"room\": {\n                \"id\": 48,\n                \"name\": \"Private Room 3\",\n                \"room_type\": \"private\",\n                \"capacity\": 1\n            },\n            \"available_slots\": [\n                {\n                    \"id\": \"ff760780-8fac-4d41-965d-ba2f7845cade\",\n                    \"name\": \"9am time slot\",\n                    \"start_time\": \"09:00:00\",\n                    \"end_time\": \"10:00:00\"\n                },\n                {\n                    \"id\": \"169bcd85-5b76-40e6-9de2-eb05af19a5fd\",\n                    \"name\": \"10am time slot\",\n                    \"start_time\": \"10:00:00\",\n                    \"end_time\": \"11:00:00\"\n                },\n                {\n                    \"id\": \"48106bd3-5810-42d0-8668-1d95a2cea87a\",\n                    \"name\": \"11am time slot\",\n                    \"start_time\": \"11:00:00\",\n                    \"end_time\": \"12:00:00\"\n                },\n                {\n                    \"id\": \"e849d724-a8a5-4f2f-b07a-a24d54e6edfc\",\n                    \"name\": \"12pm time slot\",\n                    \"start_time\": \"12:00:00\",\n                    \"end_time\": \"13:00:00\"\n                },\n                {\n                    \"id\": \"ddba17d5-9668-44ca-8540-0d7591798f03\",\n                    \"name\": \"1pm time slot\",\n                    \"start_time\": \"13:00:00\",\n                    \"end_time\": \"14:00:00\"\n                },\n                {\n                    \"id\": \"6b0515bb-ecac-4e90-9692-ed83aa69774a\",\n                    \"name\": \"2pm time slot\",\n                    \"start_time\": \"14:00:00\",\n                    \"end_time\": \"15:00:00\"\n                },\n                {\n                    \"id\": \"2a848e82-2b47-42e2-85b8-46d20fcb8f69\",\n                    \"name\": \"3pm time slot\",\n                    \"start_time\": \"15:00:00\",\n                    \"end_time\": \"16:00:00\"\n                },\n                {\n                    \"id\": \"7c111c00-3a45-45a7-9bc7-0233a0d1c85a\",\n                    \"name\": \"4pm time slot\",\n                    \"start_time\": \"16:00:00\",\n                    \"end_time\": \"17:00:00\"\n                },\n                {\n                    \"id\": \"744bcb61-2441-487c-a860-70db74b29c50\",\n                    \"name\": \"5pm time slot\",\n                    \"start_time\": \"17:00:00\",\n                    \"end_time\": \"18:00:00\"\n                }\n            ]\n        },\n        {\n            \"room\": {\n                \"id\": 49,\n                \"name\": \"Private Room 4\",\n                \"room_type\": \"private\",\n                \"capacity\": 1\n            },\n            \"available_slots\": [\n                {\n                    \"id\": \"ff760780-8fac-4d41-965d-ba2f7845cade\",\n                    \"name\": \"9am time slot\",\n                    \"start_time\": \"09:00:00\",\n                    \"end_time\": \"10:00:00\"\n                },\n                {\n                    \"id\": \"169bcd85-5b76-40e6-9de2-eb05af19a5fd\",\n                    \"name\": \"10am time slot\",\n                    \"start_time\": \"10:00:00\",\n                    \"end_time\": \"11:00:00\"\n                },\n                {\n                    \"id\": \"48106bd3-5810-42d0-8668-1d95a2cea87a\",\n                    \"name\": \"11am time slot\",\n                    \"start_time\": \"11:00:00\",\n                    \"end_time\": \"12:00:00\"\n                },\n                {\n                    \"id\": \"e849d724-a8a5-4f2f-b07a-a24d54e6edfc\",\n                    \"name\": \"12pm time slot\",\n                    \"start_time\": \"12:00:00\",\n                    \"end_time\": \"13:00:00\"\n                },\n                {\n                    \"id\": \"ddba17d5-9668-44ca-8540-0d7591798f03\",\n                    \"name\": \"1pm time slot\",\n                    \"start_time\": \"13:00:00\",\n                    \"end_time\": \"14:00:00\"\n                },\n                {\n                    \"id\": \"6b0515bb-ecac-4e90-9692-ed83aa69774a\",\n                    \"name\": \"2pm time slot\",\n                    \"start_time\": \"14:00:00\",\n                    \"end_time\": \"15:00:00\"\n                },\n                {\n                    \"id\": \"2a848e82-2b47-42e2-85b8-46d20fcb8f69\",\n                    \"name\": \"3pm time slot\",\n                    \"start_time\": \"15:00:00\",\n                    \"end_time\": \"16:00:00\"\n                },\n                {\n                    \"id\": \"7c111c00-3a45-45a7-9bc7-0233a0d1c85a\",\n                    \"name\": \"4pm time slot\",\n                    \"start_time\": \"16:00:00\",\n                    \"end_time\": \"17:00:00\"\n                },\n                {\n                    \"id\": \"744bcb61-2441-487c-a860-70db74b29c50\",\n                    \"name\": \"5pm time slot\",\n                    \"start_time\": \"17:00:00\",\n                    \"end_time\": \"18:00:00\"\n                }\n            ]\n        },\n        {\n            \"room\": {\n                \"id\": 50,\n                \"name\": \"Private Room 5\",\n                \"room_type\": \"private\",\n                \"capacity\": 1\n            },\n            \"available_slots\": [\n                {\n                    \"id\": \"ff760780-8fac-4d41-965d-ba2f7845cade\",\n                    \"name\": \"9am time slot\",\n                    \"start_time\": \"09:00:00\",\n                    \"end_time\": \"10:00:00\"\n                },\n                {\n                    \"id\": \"169bcd85-5b76-40e6-9de2-eb05af19a5fd\",\n                    \"name\": \"10am time slot\",\n                    \"start_time\": \"10:00:00\",\n                    \"end_time\": \"11:00:00\"\n                },\n                {\n                    \"id\": \"48106bd3-5810-42d0-8668-1d95a2cea87a\",\n                    \"name\": \"11am time slot\",\n                    \"start_time\": \"11:00:00\",\n                    \"end_time\": \"12:00:00\"\n                },\n                {\n                    \"id\": \"e849d724-a8a5-4f2f-b07a-a24d54e6edfc\",\n                    \"name\": \"12pm time slot\",\n                    \"start_time\": \"12:00:00\",\n                    \"end_time\": \"13:00:00\"\n                },\n                {\n                    \"id\": \"ddba17d5-9668-44ca-8540-0d7591798f03\",\n                    \"name\": \"1pm time slot\",\n                    \"start_time\": \"13:00:00\",\n                    \"end_time\": \"14:00:00\"\n                },\n                {\n                    \"id\": \"6b0515bb-ecac-4e90-9692-ed83aa69774a\",\n                    \"name\": \"2pm time slot\",\n                    \"start_time\": \"14:00:00\",\n                    \"end_time\": \"15:00:00\"\n                },\n                {\n                    \"id\": \"2a848e82-2b47-42e2-85b8-46d20fcb8f69\",\n                    \"name\": \"3pm time slot\",\n                    \"start_time\": \"15:00:00\",\n                    \"end_time\": \"16:00:00\"\n                },\n                {\n                    \"id\": \"7c111c00-3a45-45a7-9bc7-0233a0d1c85a\",\n                    \"name\": \"4pm time slot\",\n                    \"start_time\": \"16:00:00\",\n                    \"end_time\": \"17:00:00\"\n                },\n                {\n                    \"id\": \"744bcb61-2441-487c-a860-70db74b29c50\",\n                    \"name\": \"5pm time slot\",\n                    \"start_time\": \"17:00:00\",\n                    \"end_time\": \"18:00:00\"\n                }\n            ]\n        }\n    ]\n}"
+				},
+				{
+					"name": "avaiable rooms",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ5ODEyNzUwLCJpYXQiOjE3NDk3OTQ3NTAsImp0aSI6IjQzZjA1NmZkMzZjNTRiYjA4ODcwM2Q4ODhiMzI1ZTg3IiwidXNlcl9pZCI6NX0.qMWsysglnKv8lf3Bux471LdMCXJmAVT3c_8Z1_GfXoE",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/v1/rooms/available/?date=2025-06-15&page=1",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"v1",
+								"rooms",
+								"available",
+								""
+							],
+							"query": [
+								{
+									"key": "date",
+									"value": "2025-06-15"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "room_type",
+									"value": "private",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Fri, 13 Jun 2025 06:06:40 GMT"
+						},
+						{
+							"key": "Server",
+							"value": "WSGIServer/0.2 CPython/3.13.5"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept"
+						},
+						{
+							"key": "Allow",
+							"value": "GET, HEAD, OPTIONS"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Length",
+							"value": "5798"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "Referrer-Policy",
+							"value": "same-origin"
+						},
+						{
+							"key": "Cross-Origin-Opener-Policy",
+							"value": "same-origin"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"count\": 15,\n    \"next\": \"http://127.0.0.1:8000/api/v1/rooms/available/?date=2025-06-15&page=2\",\n    \"previous\": null,\n    \"results\": [\n        {\n            \"room\": {\n                \"id\": 46,\n                \"name\": \"Private Room 1\",\n                \"room_type\": \"private\",\n                \"capacity\": 1\n            },\n            \"available_slots\": [\n                {\n                    \"id\": \"ff760780-8fac-4d41-965d-ba2f7845cade\",\n                    \"name\": \"9am time slot\",\n                    \"start_time\": \"09:00:00\",\n                    \"end_time\": \"10:00:00\"\n                },\n                {\n                    \"id\": \"169bcd85-5b76-40e6-9de2-eb05af19a5fd\",\n                    \"name\": \"10am time slot\",\n                    \"start_time\": \"10:00:00\",\n                    \"end_time\": \"11:00:00\"\n                },\n                {\n                    \"id\": \"48106bd3-5810-42d0-8668-1d95a2cea87a\",\n                    \"name\": \"11am time slot\",\n                    \"start_time\": \"11:00:00\",\n                    \"end_time\": \"12:00:00\"\n                },\n                {\n                    \"id\": \"e849d724-a8a5-4f2f-b07a-a24d54e6edfc\",\n                    \"name\": \"12pm time slot\",\n                    \"start_time\": \"12:00:00\",\n                    \"end_time\": \"13:00:00\"\n                },\n                {\n                    \"id\": \"ddba17d5-9668-44ca-8540-0d7591798f03\",\n                    \"name\": \"1pm time slot\",\n                    \"start_time\": \"13:00:00\",\n                    \"end_time\": \"14:00:00\"\n                },\n                {\n                    \"id\": \"6b0515bb-ecac-4e90-9692-ed83aa69774a\",\n                    \"name\": \"2pm time slot\",\n                    \"start_time\": \"14:00:00\",\n                    \"end_time\": \"15:00:00\"\n                },\n                {\n                    \"id\": \"2a848e82-2b47-42e2-85b8-46d20fcb8f69\",\n                    \"name\": \"3pm time slot\",\n                    \"start_time\": \"15:00:00\",\n                    \"end_time\": \"16:00:00\"\n                },\n                {\n                    \"id\": \"7c111c00-3a45-45a7-9bc7-0233a0d1c85a\",\n                    \"name\": \"4pm time slot\",\n                    \"start_time\": \"16:00:00\",\n                    \"end_time\": \"17:00:00\"\n                },\n                {\n                    \"id\": \"744bcb61-2441-487c-a860-70db74b29c50\",\n                    \"name\": \"5pm time slot\",\n                    \"start_time\": \"17:00:00\",\n                    \"end_time\": \"18:00:00\"\n                }\n            ]\n        },\n        {\n            \"room\": {\n                \"id\": 47,\n                \"name\": \"Private Room 2\",\n                \"room_type\": \"private\",\n                \"capacity\": 1\n            },\n            \"available_slots\": [\n                {\n                    \"id\": \"ff760780-8fac-4d41-965d-ba2f7845cade\",\n                    \"name\": \"9am time slot\",\n                    \"start_time\": \"09:00:00\",\n                    \"end_time\": \"10:00:00\"\n                },\n                {\n                    \"id\": \"169bcd85-5b76-40e6-9de2-eb05af19a5fd\",\n                    \"name\": \"10am time slot\",\n                    \"start_time\": \"10:00:00\",\n                    \"end_time\": \"11:00:00\"\n                },\n                {\n                    \"id\": \"48106bd3-5810-42d0-8668-1d95a2cea87a\",\n                    \"name\": \"11am time slot\",\n                    \"start_time\": \"11:00:00\",\n                    \"end_time\": \"12:00:00\"\n                },\n                {\n                    \"id\": \"e849d724-a8a5-4f2f-b07a-a24d54e6edfc\",\n                    \"name\": \"12pm time slot\",\n                    \"start_time\": \"12:00:00\",\n                    \"end_time\": \"13:00:00\"\n                },\n                {\n                    \"id\": \"ddba17d5-9668-44ca-8540-0d7591798f03\",\n                    \"name\": \"1pm time slot\",\n                    \"start_time\": \"13:00:00\",\n                    \"end_time\": \"14:00:00\"\n                },\n                {\n                    \"id\": \"6b0515bb-ecac-4e90-9692-ed83aa69774a\",\n                    \"name\": \"2pm time slot\",\n                    \"start_time\": \"14:00:00\",\n                    \"end_time\": \"15:00:00\"\n                },\n                {\n                    \"id\": \"2a848e82-2b47-42e2-85b8-46d20fcb8f69\",\n                    \"name\": \"3pm time slot\",\n                    \"start_time\": \"15:00:00\",\n                    \"end_time\": \"16:00:00\"\n                },\n                {\n                    \"id\": \"7c111c00-3a45-45a7-9bc7-0233a0d1c85a\",\n                    \"name\": \"4pm time slot\",\n                    \"start_time\": \"16:00:00\",\n                    \"end_time\": \"17:00:00\"\n                },\n                {\n                    \"id\": \"744bcb61-2441-487c-a860-70db74b29c50\",\n                    \"name\": \"5pm time slot\",\n                    \"start_time\": \"17:00:00\",\n                    \"end_time\": \"18:00:00\"\n                }\n            ]\n        },\n        {\n            \"room\": {\n                \"id\": 48,\n                \"name\": \"Private Room 3\",\n                \"room_type\": \"private\",\n                \"capacity\": 1\n            },\n            \"available_slots\": [\n                {\n                    \"id\": \"ff760780-8fac-4d41-965d-ba2f7845cade\",\n                    \"name\": \"9am time slot\",\n                    \"start_time\": \"09:00:00\",\n                    \"end_time\": \"10:00:00\"\n                },\n                {\n                    \"id\": \"169bcd85-5b76-40e6-9de2-eb05af19a5fd\",\n                    \"name\": \"10am time slot\",\n                    \"start_time\": \"10:00:00\",\n                    \"end_time\": \"11:00:00\"\n                },\n                {\n                    \"id\": \"48106bd3-5810-42d0-8668-1d95a2cea87a\",\n                    \"name\": \"11am time slot\",\n                    \"start_time\": \"11:00:00\",\n                    \"end_time\": \"12:00:00\"\n                },\n                {\n                    \"id\": \"e849d724-a8a5-4f2f-b07a-a24d54e6edfc\",\n                    \"name\": \"12pm time slot\",\n                    \"start_time\": \"12:00:00\",\n                    \"end_time\": \"13:00:00\"\n                },\n                {\n                    \"id\": \"ddba17d5-9668-44ca-8540-0d7591798f03\",\n                    \"name\": \"1pm time slot\",\n                    \"start_time\": \"13:00:00\",\n                    \"end_time\": \"14:00:00\"\n                },\n                {\n                    \"id\": \"6b0515bb-ecac-4e90-9692-ed83aa69774a\",\n                    \"name\": \"2pm time slot\",\n                    \"start_time\": \"14:00:00\",\n                    \"end_time\": \"15:00:00\"\n                },\n                {\n                    \"id\": \"2a848e82-2b47-42e2-85b8-46d20fcb8f69\",\n                    \"name\": \"3pm time slot\",\n                    \"start_time\": \"15:00:00\",\n                    \"end_time\": \"16:00:00\"\n                },\n                {\n                    \"id\": \"7c111c00-3a45-45a7-9bc7-0233a0d1c85a\",\n                    \"name\": \"4pm time slot\",\n                    \"start_time\": \"16:00:00\",\n                    \"end_time\": \"17:00:00\"\n                },\n                {\n                    \"id\": \"744bcb61-2441-487c-a860-70db74b29c50\",\n                    \"name\": \"5pm time slot\",\n                    \"start_time\": \"17:00:00\",\n                    \"end_time\": \"18:00:00\"\n                }\n            ]\n        },\n        {\n            \"room\": {\n                \"id\": 49,\n                \"name\": \"Private Room 4\",\n                \"room_type\": \"private\",\n                \"capacity\": 1\n            },\n            \"available_slots\": [\n                {\n                    \"id\": \"ff760780-8fac-4d41-965d-ba2f7845cade\",\n                    \"name\": \"9am time slot\",\n                    \"start_time\": \"09:00:00\",\n                    \"end_time\": \"10:00:00\"\n                },\n                {\n                    \"id\": \"169bcd85-5b76-40e6-9de2-eb05af19a5fd\",\n                    \"name\": \"10am time slot\",\n                    \"start_time\": \"10:00:00\",\n                    \"end_time\": \"11:00:00\"\n                },\n                {\n                    \"id\": \"48106bd3-5810-42d0-8668-1d95a2cea87a\",\n                    \"name\": \"11am time slot\",\n                    \"start_time\": \"11:00:00\",\n                    \"end_time\": \"12:00:00\"\n                },\n                {\n                    \"id\": \"e849d724-a8a5-4f2f-b07a-a24d54e6edfc\",\n                    \"name\": \"12pm time slot\",\n                    \"start_time\": \"12:00:00\",\n                    \"end_time\": \"13:00:00\"\n                },\n                {\n                    \"id\": \"ddba17d5-9668-44ca-8540-0d7591798f03\",\n                    \"name\": \"1pm time slot\",\n                    \"start_time\": \"13:00:00\",\n                    \"end_time\": \"14:00:00\"\n                },\n                {\n                    \"id\": \"6b0515bb-ecac-4e90-9692-ed83aa69774a\",\n                    \"name\": \"2pm time slot\",\n                    \"start_time\": \"14:00:00\",\n                    \"end_time\": \"15:00:00\"\n                },\n                {\n                    \"id\": \"2a848e82-2b47-42e2-85b8-46d20fcb8f69\",\n                    \"name\": \"3pm time slot\",\n                    \"start_time\": \"15:00:00\",\n                    \"end_time\": \"16:00:00\"\n                },\n                {\n                    \"id\": \"7c111c00-3a45-45a7-9bc7-0233a0d1c85a\",\n                    \"name\": \"4pm time slot\",\n                    \"start_time\": \"16:00:00\",\n                    \"end_time\": \"17:00:00\"\n                },\n                {\n                    \"id\": \"744bcb61-2441-487c-a860-70db74b29c50\",\n                    \"name\": \"5pm time slot\",\n                    \"start_time\": \"17:00:00\",\n                    \"end_time\": \"18:00:00\"\n                }\n            ]\n        },\n        {\n            \"room\": {\n                \"id\": 50,\n                \"name\": \"Private Room 5\",\n                \"room_type\": \"private\",\n                \"capacity\": 1\n            },\n            \"available_slots\": [\n                {\n                    \"id\": \"ff760780-8fac-4d41-965d-ba2f7845cade\",\n                    \"name\": \"9am time slot\",\n                    \"start_time\": \"09:00:00\",\n                    \"end_time\": \"10:00:00\"\n                },\n                {\n                    \"id\": \"169bcd85-5b76-40e6-9de2-eb05af19a5fd\",\n                    \"name\": \"10am time slot\",\n                    \"start_time\": \"10:00:00\",\n                    \"end_time\": \"11:00:00\"\n                },\n                {\n                    \"id\": \"48106bd3-5810-42d0-8668-1d95a2cea87a\",\n                    \"name\": \"11am time slot\",\n                    \"start_time\": \"11:00:00\",\n                    \"end_time\": \"12:00:00\"\n                },\n                {\n                    \"id\": \"e849d724-a8a5-4f2f-b07a-a24d54e6edfc\",\n                    \"name\": \"12pm time slot\",\n                    \"start_time\": \"12:00:00\",\n                    \"end_time\": \"13:00:00\"\n                },\n                {\n                    \"id\": \"ddba17d5-9668-44ca-8540-0d7591798f03\",\n                    \"name\": \"1pm time slot\",\n                    \"start_time\": \"13:00:00\",\n                    \"end_time\": \"14:00:00\"\n                },\n                {\n                    \"id\": \"6b0515bb-ecac-4e90-9692-ed83aa69774a\",\n                    \"name\": \"2pm time slot\",\n                    \"start_time\": \"14:00:00\",\n                    \"end_time\": \"15:00:00\"\n                },\n                {\n                    \"id\": \"2a848e82-2b47-42e2-85b8-46d20fcb8f69\",\n                    \"name\": \"3pm time slot\",\n                    \"start_time\": \"15:00:00\",\n                    \"end_time\": \"16:00:00\"\n                },\n                {\n                    \"id\": \"7c111c00-3a45-45a7-9bc7-0233a0d1c85a\",\n                    \"name\": \"4pm time slot\",\n                    \"start_time\": \"16:00:00\",\n                    \"end_time\": \"17:00:00\"\n                },\n                {\n                    \"id\": \"744bcb61-2441-487c-a860-70db74b29c50\",\n                    \"name\": \"5pm time slot\",\n                    \"start_time\": \"17:00:00\",\n                    \"end_time\": \"18:00:00\"\n                }\n            ]\n        }\n    ]\n}"
+				}
+			]
+		},
+		{
+			"name": "book room",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ5ODEyNzUwLCJpYXQiOjE3NDk3OTQ3NTAsImp0aSI6IjQzZjA1NmZkMzZjNTRiYjA4ODcwM2Q4ODhiMzI1ZTg3IiwidXNlcl9pZCI6NX0.qMWsysglnKv8lf3Bux471LdMCXJmAVT3c_8Z1_GfXoE",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"room\": \"Conference Room 1\",\r\n    \"date\": \"2025-06-15\",\r\n    \"time_slot\": \"9am time slot\",\r\n    \"team\":\"1\"\r\n    \r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/v1/bookings/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"bookings",
+						""
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "book room",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ5ODEyNzUwLCJpYXQiOjE3NDk3OTQ3NTAsImp0aSI6IjQzZjA1NmZkMzZjNTRiYjA4ODcwM2Q4ODhiMzI1ZTg3IiwidXNlcl9pZCI6NX0.qMWsysglnKv8lf3Bux471LdMCXJmAVT3c_8Z1_GfXoE",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"room\": \"Private Room 1\",\r\n    \"date\": \"2025-06-15\",\r\n    \"time_slot\": \"9am time slot\"\r\n    \r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/v1/bookings/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"v1",
+								"bookings",
+								""
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Fri, 13 Jun 2025 06:07:41 GMT"
+						},
+						{
+							"key": "Server",
+							"value": "WSGIServer/0.2 CPython/3.13.5"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept"
+						},
+						{
+							"key": "Allow",
+							"value": "POST, OPTIONS"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Length",
+							"value": "53"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "Referrer-Policy",
+							"value": "same-origin"
+						},
+						{
+							"key": "Cross-Origin-Opener-Policy",
+							"value": "same-origin"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"booking_id\": \"e9a3a8a1-df1b-4f46-acda-628afb7b2cec\"\n}"
+				},
+				{
+					"name": "book room",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ5ODEyNzUwLCJpYXQiOjE3NDk3OTQ3NTAsImp0aSI6IjQzZjA1NmZkMzZjNTRiYjA4ODcwM2Q4ODhiMzI1ZTg3IiwidXNlcl9pZCI6NX0.qMWsysglnKv8lf3Bux471LdMCXJmAVT3c_8Z1_GfXoE",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"room\": \"Conference Room 1\",\r\n    \"date\": \"2025-06-15\",\r\n    \"time_slot\": \"9am time slot\",\r\n    \"team\":\"1\"\r\n    \r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/v1/bookings/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"v1",
+								"bookings",
+								""
+							]
+						}
+					},
+					"status": "Forbidden",
+					"code": 403,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Fri, 13 Jun 2025 06:17:38 GMT"
+						},
+						{
+							"key": "Server",
+							"value": "WSGIServer/0.2 CPython/3.13.5"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept"
+						},
+						{
+							"key": "Allow",
+							"value": "POST, OPTIONS"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Length",
+							"value": "53"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "Referrer-Policy",
+							"value": "same-origin"
+						},
+						{
+							"key": "Cross-Origin-Opener-Policy",
+							"value": "same-origin"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"error\": \"Only team lead can book conference rooms.\"\n}"
+				},
+				{
+					"name": "book room",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ5ODEzNDk2LCJpYXQiOjE3NDk3OTU0OTYsImp0aSI6IjA0MzUwOTlmMTNiMzQ2NzM5N2FiMDg1Mjg1ZWU4NmQ0IiwidXNlcl9pZCI6MX0.7qSRVIeXj90MgV2HH9FwQqbzSdEo5yPFLFU1kbALkDs",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"room\": \"Conference Room 1\",\r\n    \"date\": \"2025-06-15\",\r\n    \"time_slot\": \"9am time slot\",\r\n    \"team\":\"1\"\r\n    \r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/v1/bookings/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"v1",
+								"bookings",
+								""
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Fri, 13 Jun 2025 06:18:34 GMT"
+						},
+						{
+							"key": "Server",
+							"value": "WSGIServer/0.2 CPython/3.13.5"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept"
+						},
+						{
+							"key": "Allow",
+							"value": "POST, OPTIONS"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Length",
+							"value": "53"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "Referrer-Policy",
+							"value": "same-origin"
+						},
+						{
+							"key": "Cross-Origin-Opener-Policy",
+							"value": "same-origin"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"booking_id\": \"b3d29961-dc56-4d5e-8439-3726f3a7520e\"\n}"
+				}
+			]
+		},
+		{
+			"name": "view bookings",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ5ODEyNzUwLCJpYXQiOjE3NDk3OTQ3NTAsImp0aSI6IjQzZjA1NmZkMzZjNTRiYjA4ODcwM2Q4ODhiMzI1ZTg3IiwidXNlcl9pZCI6NX0.qMWsysglnKv8lf3Bux471LdMCXJmAVT3c_8Z1_GfXoE",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/v1/bookings/list/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"bookings",
+						"list",
+						""
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "view bookings",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ5ODEyNzUwLCJpYXQiOjE3NDk3OTQ3NTAsImp0aSI6IjQzZjA1NmZkMzZjNTRiYjA4ODcwM2Q4ODhiMzI1ZTg3IiwidXNlcl9pZCI6NX0.qMWsysglnKv8lf3Bux471LdMCXJmAVT3c_8Z1_GfXoE",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/v1/bookings/list/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"v1",
+								"bookings",
+								"list",
+								""
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Fri, 13 Jun 2025 06:08:38 GMT"
+						},
+						{
+							"key": "Server",
+							"value": "WSGIServer/0.2 CPython/3.13.5"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept"
+						},
+						{
+							"key": "Allow",
+							"value": "GET, HEAD, OPTIONS"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Length",
+							"value": "416"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "Referrer-Policy",
+							"value": "same-origin"
+						},
+						{
+							"key": "Cross-Origin-Opener-Policy",
+							"value": "same-origin"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"count\": 1,\n    \"next\": null,\n    \"previous\": null,\n    \"results\": [\n        {\n            \"id\": \"e9a3a8a1-df1b-4f46-acda-628afb7b2cec\",\n            \"user\": {\n                \"id\": 5,\n                \"email\": \"demouser@gm.com\",\n                \"name\": \"demo_user\",\n                \"age\": 23,\n                \"gender\": \"male\",\n                \"role\": \"admin\"\n            },\n            \"team\": null,\n            \"room\": {\n                \"id\": 46,\n                \"name\": \"Private Room 1\",\n                \"room_type\": \"private\",\n                \"capacity\": 1\n            },\n            \"date\": \"2025-06-15\",\n            \"timestamp\": \"2025-06-13T06:07:41.308873Z\",\n            \"is_active\": true,\n            \"time_slot\": \"ff760780-8fac-4d41-965d-ba2f7845cade\"\n        }\n    ]\n}"
+				}
+			]
+		},
+		{
+			"name": "cancel booking",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ5ODEyNzUwLCJpYXQiOjE3NDk3OTQ3NTAsImp0aSI6IjQzZjA1NmZkMzZjNTRiYjA4ODcwM2Q4ODhiMzI1ZTg3IiwidXNlcl9pZCI6NX0.qMWsysglnKv8lf3Bux471LdMCXJmAVT3c_8Z1_GfXoE",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/v1/cancel/e9a3a8a1-df1b-4f46-acda-628afb7b2cec/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"cancel",
+						"e9a3a8a1-df1b-4f46-acda-628afb7b2cec",
+						""
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "cancle booking",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ5ODEyNzUwLCJpYXQiOjE3NDk3OTQ3NTAsImp0aSI6IjQzZjA1NmZkMzZjNTRiYjA4ODcwM2Q4ODhiMzI1ZTg3IiwidXNlcl9pZCI6NX0.qMWsysglnKv8lf3Bux471LdMCXJmAVT3c_8Z1_GfXoE",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/v1/cancel/e9a3a8a1-df1b-4f46-acda-628afb7b2cec/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"v1",
+								"cancel",
+								"e9a3a8a1-df1b-4f46-acda-628afb7b2cec",
+								""
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Fri, 13 Jun 2025 06:11:48 GMT"
+						},
+						{
+							"key": "Server",
+							"value": "WSGIServer/0.2 CPython/3.13.5"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept"
+						},
+						{
+							"key": "Allow",
+							"value": "POST, OPTIONS"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Length",
+							"value": "32"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "Referrer-Policy",
+							"value": "same-origin"
+						},
+						{
+							"key": "Cross-Origin-Opener-Policy",
+							"value": "same-origin"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": \"Booking cancelled.\"\n}"
+				}
+			]
+		},
+		{
+			"name": "get teams",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ5ODEwNTAzLCJpYXQiOjE3NDk3OTI1MDMsImp0aSI6ImNhNTY0NTAxYjZjYjQyNTg5OTk0NThjZmQ2NjM0NjY5IiwidXNlcl9pZCI6MX0.hgfLofvXmnh7IwdSPN31Z4Kg34dGkN-lapw7UMGFjbg",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/v1/teams",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"teams"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "get teams",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ5ODEwNTAzLCJpYXQiOjE3NDk3OTI1MDMsImp0aSI6ImNhNTY0NTAxYjZjYjQyNTg5OTk0NThjZmQ2NjM0NjY5IiwidXNlcl9pZCI6MX0.hgfLofvXmnh7IwdSPN31Z4Kg34dGkN-lapw7UMGFjbg",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/v1/teams",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"v1",
+								"teams"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Fri, 13 Jun 2025 06:13:59 GMT"
+						},
+						{
+							"key": "Server",
+							"value": "WSGIServer/0.2 CPython/3.13.5"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept"
+						},
+						{
+							"key": "Allow",
+							"value": "GET, POST, HEAD, OPTIONS"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Length",
+							"value": "110"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "Referrer-Policy",
+							"value": "same-origin"
+						},
+						{
+							"key": "Cross-Origin-Opener-Policy",
+							"value": "same-origin"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"count\": 1,\n    \"next\": null,\n    \"previous\": null,\n    \"results\": [\n        {\n            \"id\": 1,\n            \"name\": \"team_01\",\n            \"created_by\": 1,\n            \"members\": [\n                1,\n                2,\n                3\n            ]\n        }\n    ]\n}"
+				}
+			]
+		},
+		{
+			"name": "join_team",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ5ODEyNzUwLCJpYXQiOjE3NDk3OTQ3NTAsImp0aSI6IjQzZjA1NmZkMzZjNTRiYjA4ODcwM2Q4ODhiMzI1ZTg3IiwidXNlcl9pZCI6NX0.qMWsysglnKv8lf3Bux471LdMCXJmAVT3c_8Z1_GfXoE",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/v1/teams/1/join/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"teams",
+						"1",
+						"join",
+						""
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "join_team",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ5ODEyNzUwLCJpYXQiOjE3NDk3OTQ3NTAsImp0aSI6IjQzZjA1NmZkMzZjNTRiYjA4ODcwM2Q4ODhiMzI1ZTg3IiwidXNlcl9pZCI6NX0.qMWsysglnKv8lf3Bux471LdMCXJmAVT3c_8Z1_GfXoE",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/v1/teams/1/join/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"v1",
+								"teams",
+								"1",
+								"join",
+								""
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Fri, 13 Jun 2025 06:15:18 GMT"
+						},
+						{
+							"key": "Server",
+							"value": "WSGIServer/0.2 CPython/3.13.5"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept"
+						},
+						{
+							"key": "Allow",
+							"value": "POST, OPTIONS"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Length",
+							"value": "37"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "Referrer-Policy",
+							"value": "same-origin"
+						},
+						{
+							"key": "Cross-Origin-Opener-Policy",
+							"value": "same-origin"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"User added to the team.\"\n}"
+				}
+			]
+		}
+	]
+}
