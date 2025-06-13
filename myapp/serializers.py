@@ -30,7 +30,8 @@ class TimeslotSerializer(serializers.ModelSerializer):
 class BookingSerializer(serializers.ModelSerializer):
     user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), required=False)
     team = serializers.PrimaryKeyRelatedField(queryset=Team.objects.all(), required=False)
-    time_slot = serializers.PrimaryKeyRelatedField(queryset=Timeslot.objects.all())
+    room = serializers.CharField(write_only=True)
+    time_slot = serializers.CharField(write_only=True)
 
     class Meta:
         model = Booking
@@ -39,6 +40,24 @@ class BookingSerializer(serializers.ModelSerializer):
             'user', 'team', 'timestamp', 'is_active'
         ]
         read_only_fields = ['id', 'timestamp', 'is_active']
+
+    def validate(self, attrs):
+        room_name = attrs.get('room')
+        time_slot_name = attrs.get('time_slot')
+
+        try:
+            room = Room.objects.get(name=room_name)
+        except Room.DoesNotExist:
+            raise serializers.ValidationError({'room': f'Room with name "{room_name}" does not exist.'})
+
+        try:
+            time_slot = Timeslot.objects.get(name=time_slot_name)
+        except Timeslot.DoesNotExist:
+            raise serializers.ValidationError({'time_slot': f'Timeslot with name "{time_slot_name}" does not exist.'})
+
+        attrs['room'] = room
+        attrs['time_slot'] = time_slot
+        return attrs
 
 class BookingListSerializer(serializers.ModelSerializer):
     user = UserSerializer()

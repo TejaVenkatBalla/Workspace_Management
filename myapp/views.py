@@ -55,16 +55,16 @@ class BookingCreateView(APIView):
         room = data['room']
         date = data['date']
         time_slot = data['time_slot']
-
-        # Check if user or team already has an active booking for the same date and time_slot
         user = request.user
-        team = data.get('team')
+        team = data['team'] if 'team' in data else None
+
+        
         if not time_slot:
             return Response({"error": "Missing time_slot in request data."}, status=400)
-
-        if isinstance(room, Room) and has_booking_conflict(room, date, time_slot):
-            return Response({"error": "Room is already booked for the selected date and time slot."}, status=400)
         
+        if not room:
+            return Response({"error": "Missing room in request data."}, status=400)
+
         if team and room.room_type != 'conference':
             return Response({"error": "Team can only book conference rooms."}, status=400)
         
@@ -75,10 +75,23 @@ class BookingCreateView(APIView):
                 return Response({"error": "Team must have at least 3 members (age >= 10)."}, status=400)
             if user != team.created_by: # Only team lead can book conference rooms
                 return Response({"error": "Only team lead can book conference rooms."}, status=403)
-
-            booking = serializer.save(team=team)
+            if has_booking_conflict(room, date, time_slot):
+                return Response({"error": "Room is already booked for the selected date and time slot."}, status=400)
+            else:
+                booking = serializer.save(team=team)
 
         elif room.room_type == 'shared':
+            # Check if user already has an active booking for any shared room at the same date and time_slot
+            existing_booking = Booking.objects.filter(
+                user=user,
+                room__room_type='shared',
+                date=date,
+                time_slot=time_slot,
+                is_active=True
+            ).exists()
+            if existing_booking:
+                return Response({"error": "User has already booked a shared room for the selected date and time slot."}, status=400)
+
             # Find a shared desk room with availability
             shared_rooms = Room.objects.filter(room_type='shared')
             assigned_room = None
@@ -98,7 +111,10 @@ class BookingCreateView(APIView):
             booking = serializer.save(user=user, room=assigned_room)
 
         elif room.room_type == 'private':
-            booking = serializer.save(user=user)
+            if has_booking_conflict(room, date, time_slot):
+                return Response({"error": "Room is already booked for the selected date and time slot."}, status=400)
+            else:
+                booking = serializer.save(user=user)
 
         return Response({"booking_id": booking.id}, status=201)
 
@@ -116,7 +132,8 @@ class BookingCancelView(APIView):
             if booking.team.created_by != request.user:
                 return Response({"error": "Only team lead can cancel this booking."}, status=403)
         else:
-            return Response({"error": "Only the booking user can cancel this booking."}, status=403)
+            if booking.user != request.user:
+                return Response({"error": "Only the booking user can cancel this booking."}, status=403)
 
         booking.is_active = False
         booking.save()
@@ -134,6 +151,9 @@ class BookingListView(generics.ListAPIView):
             #return Booking.objects.filter(user=user, is_active=True)
             return Booking.objects.filter(models.Q(user=user) | models.Q(team__members=user), is_active=True).distinct()
 
+from rest_framework.pagination import PageNumberPagination
+from rest_framework.response import Response
+
 class AvailableRoomsAndSlotsByDateView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -147,13 +167,16 @@ class AvailableRoomsAndSlotsByDateView(APIView):
         if room_type:
             rooms = Room.objects.filter(room_type=room_type)
         else:
-            rooms = Room.objects.exclude(room_type='shared')
+            rooms = Room.objects.all()
+
+        paginator = PageNumberPagination()
+        paginated_rooms = paginator.paginate_queryset(rooms, request)
 
         all_time_slots = Timeslot.objects.all()
 
         result = []
 
-        for room in rooms:
+        for room in paginated_rooms:
             available_slots = []
             for time_slot in all_time_slots:
                 if room.room_type == 'shared':
@@ -166,6 +189,7 @@ class AvailableRoomsAndSlotsByDateView(APIView):
                     if booking_count < 4:
                         available_slots.append({
                             "id": time_slot.id,
+                            "name": time_slot.name,
                             "start_time": time_slot.start_time,
                             "end_time": time_slot.end_time
                         })
@@ -179,6 +203,7 @@ class AvailableRoomsAndSlotsByDateView(APIView):
                     if not is_booked:
                         available_slots.append({
                             "id": time_slot.id,
+                            "name": time_slot.name,
                             "start_time": time_slot.start_time,
                             "end_time": time_slot.end_time
                         })
@@ -193,8 +218,10 @@ class AvailableRoomsAndSlotsByDateView(APIView):
                     },
                     "available_slots": available_slots
                 })
+            else:
+                return Response({"message": "No available rooms or slots for the selected date."}, status=404)
 
-        return Response(result)
+        return paginator.get_paginated_response(result)
 
 # Team CRUD views
 class TeamListCreateView(generics.ListCreateAPIView):

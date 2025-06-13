@@ -81,9 +81,39 @@ class Timeslot(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     start_time = models.TimeField()
     end_time = models.TimeField()
+    name = models.CharField(max_length=50, blank=True)
+
+    def save(self, *args, **kwargs):
+        if not self.name:
+            self.name = self.generate_default_name()
+        super().save(*args, **kwargs)
+
+    def generate_default_name(self):
+        # Format start_time to string like "10:00am" or "5pm"
+        hour = self.start_time.hour
+        minute = self.start_time.minute
+        suffix = "am"
+        display_hour = hour
+        if hour == 0:
+            display_hour = 12
+            suffix = "am"
+        elif 1 <= hour < 12:
+            suffix = "am"
+        elif hour == 12:
+            suffix = "pm"
+        else:
+            display_hour = hour - 12
+            suffix = "pm"
+
+        if minute == 0:
+            time_str = f"{display_hour}{suffix}"
+        else:
+            time_str = f"{display_hour}:{minute:02d}{suffix}"
+
+        return f"{time_str} time slot"
 
     def __str__(self):
-        return f"{self.start_time} - {self.end_time}"
+        return self.name if self.name else f"{self.start_time} - {self.end_time}"
 
 class Booking(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -104,11 +134,6 @@ class Booking(models.Model):
             models.CheckConstraint(
                 check=~(models.Q(user__isnull=False) & models.Q(team__isnull=False)),
                 name='booking_cannot_have_both_user_and_team'
-            ),
-            models.UniqueConstraint(
-                fields=['room', 'date', 'time_slot'],
-                condition=models.Q(is_active=True),
-                name='unique_active_booking_per_slot'
             )
         ]
 
