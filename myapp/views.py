@@ -9,9 +9,15 @@ from .serializers import *
 from rest_framework import generics
 from datetime import date as dt_date
 class SignupView(APIView):
+    """
+    API view to handle user signup and JWT token generation.
+    """
     permission_classes = [AllowAny]
 
     def post(self, request):
+        """
+        Handle POST request to create a new user and return JWT tokens.
+        """
         serializer = UserSignupSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
@@ -23,11 +29,28 @@ class SignupView(APIView):
 
 # Custom permission class to restrict admin-only views
 class IsAdmin(BasePermission):
+    """
+    Custom permission to allow access only to admin users.
+    """
     def has_permission(self, request, view):
+        """
+        Check if the user has admin role.
+        """
         return request.user and request.user.role == 'admin'
 
 # Utility for conflict check
 def has_booking_conflict(room, date, time_slot):
+    """
+    Check if there is an active booking conflict for the given room, date, and time slot.
+
+    Args:
+        room: Room instance to check.
+        date: Date of the booking.
+        time_slot: Time slot of the booking.
+
+    Returns:
+        bool: True if a conflict exists, False otherwise.
+    """
     return Booking.objects.filter(
         room=room,
         date=date,
@@ -37,6 +60,15 @@ def has_booking_conflict(room, date, time_slot):
 
 # Utility to calculate headcount
 def team_seat_count(team):
+    """
+    Calculate the number of team members aged 10 or older.
+
+    Args:
+        team: Team instance.
+
+    Returns:
+        int: Count of team members aged 10 or older.
+    """
     count = 0
     for member in team.members.all():
         if member.age >= 10:
@@ -44,10 +76,19 @@ def team_seat_count(team):
     return count
 
 class BookingCreateView(APIView):
+    """
+    API view to create a new booking for rooms including conference, shared, and private types.
+    """
     permission_classes = [IsAuthenticated]
 
     @transaction.atomic
     def post(self, request):
+        """
+        Handle POST request to create a booking with validation for room type and user/team eligibility.
+
+        Returns:
+            Response: Booking ID on success or error message on failure.
+        """
         serializer = BookingSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         data = serializer.validated_data
@@ -119,10 +160,22 @@ class BookingCreateView(APIView):
         return Response({"booking_id": booking.id}, status=201)
 
 class BookingCancelView(APIView):
+    """
+    API view to cancel an existing active booking.
+    """
     permission_classes = [IsAuthenticated]
 
     @transaction.atomic
     def post(self, request, booking_id):
+        """
+        Handle POST request to cancel a booking if the user is authorized.
+
+        Args:
+            booking_id (int): ID of the booking to cancel.
+
+        Returns:
+            Response: Success or error message.
+        """
         try:
             booking = Booking.objects.select_for_update().get(id=booking_id, is_active=True)
         except Booking.DoesNotExist:
@@ -140,10 +193,19 @@ class BookingCancelView(APIView):
         return Response({"success": "Booking cancelled."})
 
 class BookingListView(generics.ListAPIView):
+    """
+    API view to list active bookings for the authenticated user or all bookings for admin users.
+    """
     permission_classes = [IsAuthenticated]
     serializer_class = BookingListSerializer
 
     def get_queryset(self):
+        """
+        Get the queryset of bookings based on user role.
+
+        Returns:
+            QuerySet: Active bookings for the user or all active bookings for admin.
+        """
         user = self.request.user
         if user.role == 'admin':
             return Booking.objects.filter(is_active=True)
@@ -155,9 +217,22 @@ from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 
 class AvailableRoomsAndSlotsByDateView(APIView):
+    """
+    API view to list available rooms and their available time slots for a given date and optional room type.
+    """
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
+        """
+        Handle GET request to retrieve available rooms and slots.
+
+        Query Parameters:
+            date (str): Date to check availability for. Defaults to today if not provided.
+            room_type (str): Optional room type filter.
+
+        Returns:
+            Response: Paginated list of rooms with available time slots or a 404 message if none available.
+        """
         date = request.query_params.get('date')
         room_type = request.query_params.get('room_type')
 
@@ -225,10 +300,19 @@ class AvailableRoomsAndSlotsByDateView(APIView):
 
 # Team CRUD views
 class TeamListCreateView(generics.ListCreateAPIView):
+    """
+    API view to list and create teams. Admins see all teams; users see teams they created or belong to.
+    """
     permission_classes = [IsAuthenticated]
     serializer_class = TeamSerializer
 
     def get_queryset(self):
+        """
+        Get queryset of teams based on user role.
+
+        Returns:
+            QuerySet: Teams visible to the user.
+        """
         user = self.request.user
         if user.role == 'admin':
             return Team.objects.all()
@@ -236,14 +320,26 @@ class TeamListCreateView(generics.ListCreateAPIView):
         return Team.objects.filter(models.Q(created_by=user) | models.Q(members=user)).distinct()
         #return Team.objects.all()
     def perform_create(self, serializer):
+        """
+        Save the team with the current user as creator.
+        """
         serializer.save(created_by=self.request.user)
 
 class TeamRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+    """
+    API view to retrieve, update, or delete a team. Admins can access all; users only their own teams.
+    """
     permission_classes = [IsAuthenticated]
     serializer_class = TeamSerializer
     lookup_field = 'id'
 
     def get_queryset(self):
+        """
+        Get queryset of teams based on user role.
+
+        Returns:
+            QuerySet: Teams accessible to the user.
+        """
         user = self.request.user
         if user.role == 'admin':
             return Team.objects.all()
@@ -252,9 +348,21 @@ class TeamRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
 
 # API for user to join a team
 class JoinTeamView(APIView):
+    """
+    API view for a user to join a team.
+    """
     permission_classes = [IsAuthenticated]
 
     def post(self, request, team_id):
+        """
+        Handle POST request to add the authenticated user to the specified team.
+
+        Args:
+            team_id (int): ID of the team to join.
+
+        Returns:
+            Response: Success or error message.
+        """
         user = request.user
         try:
             team = Team.objects.get(id=team_id)
@@ -270,9 +378,20 @@ class JoinTeamView(APIView):
 
 # API for admin to add any user to any team
 class AdminAddUserToTeamView(APIView):
+    """
+    API view for admin users to add any user to any team.
+    """
     permission_classes = [IsAuthenticated, IsAdmin]
 
     def post(self, request):
+        """
+        Handle POST request to add a user to a team by admin.
+
+        Expects 'team_id' and 'user_id' in request data.
+
+        Returns:
+            Response: Success or error message.
+        """
         team_id = request.data.get('team_id')
         user_id = request.data.get('user_id')
 
@@ -298,52 +417,104 @@ class AdminAddUserToTeamView(APIView):
 
 # Admin CRUD views for User
 class UserListCreateView(generics.ListCreateAPIView):
+    """
+    API view to list and create users. Admins only.
+    """
     permission_classes = [IsAuthenticated, IsAdmin]
     serializer_class = UserSerializer
 
     def get_queryset(self):
+        """
+        Get queryset of all users.
+
+        Returns:
+            QuerySet: All users.
+        """
         return User.objects.all()
 
 class UserRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+    """
+    API view to retrieve, update, or delete a user. Admins only.
+    """
     permission_classes = [IsAuthenticated, IsAdmin]
     serializer_class = UserSerializer
     lookup_field = 'id'
 
     def get_queryset(self):
+        """
+        Get queryset of all users.
+
+        Returns:
+            QuerySet: All users.
+        """
         return User.objects.all()
 
 # Admin CRUD views for Room
 class RoomListCreateView(generics.ListCreateAPIView):
+    """
+    API view to list and create rooms. Admins only.
+    """
     permission_classes = [IsAuthenticated, IsAdmin]
     serializer_class = RoomSerializer
 
     def get_queryset(self):
+        """
+        Get queryset of all rooms.
+
+        Returns:
+            QuerySet: All rooms.
+        """
         return Room.objects.all()
 
 class RoomRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+    """
+    API view to retrieve, update, or delete a room. Admins only.
+    """
     permission_classes = [IsAuthenticated, IsAdmin]
     serializer_class = RoomSerializer
     lookup_field = 'id'
 
     def get_queryset(self):
+        """
+        Get queryset of all rooms.
+
+        Returns:
+            QuerySet: All rooms.
+        """
         return Room.objects.all()
 
 # Admin CRUD views for Timeslot
 class TimeslotListCreateView(generics.ListCreateAPIView):
+    """
+    API view to list and create timeslots. Admins only.
+    """
     permission_classes = [IsAuthenticated, IsAdmin]
     serializer_class = TimeslotSerializer
 
     def get_queryset(self):
+        """
+        Get queryset of all timeslots.
+
+        Returns:
+            QuerySet: All timeslots.
+        """
         return Timeslot.objects.all()
 
 class TimeslotRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+    """
+    API view to retrieve, update, or delete a timeslot. Admins only.
+    """
     permission_classes = [IsAuthenticated, IsAdmin]
     serializer_class = TimeslotSerializer
     lookup_field = 'id'
 
     def get_queryset(self):
+        """
+        Get queryset of all timeslots.
+
+        Returns:
+            QuerySet: All timeslots.
+        """
         return Timeslot.objects.all()
-
-
 
 

@@ -1,6 +1,9 @@
 
 from rest_framework import serializers
 from .models import User, Team, Room, Booking, Timeslot
+from rest_framework import serializers
+from django.contrib.auth import get_user_model
+from django.contrib.auth.hashers import make_password
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -68,13 +71,7 @@ class BookingListSerializer(serializers.ModelSerializer):
         model = Booking
         fields = '__all__'
 
-
-from rest_framework import serializers
-from django.contrib.auth import get_user_model
-from django.contrib.auth.hashers import make_password
-
 User = get_user_model()
-
 class UserSignupSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, min_length=6)
 
