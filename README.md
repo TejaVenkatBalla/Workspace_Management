@@ -5,6 +5,62 @@ Frejun is a room booking system API that allows users to sign up, log in, book r
 
 ---
 
+## Setup Instructions
+
+### Prerequisites
+- Python 3.8+
+- pip
+- virtualenv (optional but recommended)
+- Docker and Docker Compose (optional for containerized setup)
+
+### Installation
+
+1. Clone the repository:
+```bash
+git clone <repository_url>
+cd frejun
+```
+
+2. Create and activate a virtual environment:
+```bash
+python -m venv venv
+# On Windows
+venv\Scripts\activate
+# On Unix or MacOS
+source venv/bin/activate
+```
+
+3. Install dependencies:
+```bash
+pip install -r requirements.txt
+```
+
+4. Apply migrations:
+```bash
+python manage.py migrate
+```
+
+5. Create a superuser (admin):
+```bash
+python manage.py createsuperuser
+```
+
+6. Run the development server:
+```bash
+python manage.py runserver
+```
+
+### Using Docker (Optional)
+
+1. Build and start containers:
+```bash
+docker-compose up --build
+```
+
+2. The API will be available at `http://localhost:8000/`
+
+---
+
 ## Authentication
 
 ### Signup
