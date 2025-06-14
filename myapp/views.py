@@ -97,7 +97,12 @@ class BookingCreateView(APIView):
         serializer.is_valid(raise_exception=True)
         data = serializer.validated_data
 
-        room = data['room']
+
+        # Lock the room row to prevent race conditions
+        room_name = request.data.get("room")
+        room = Room.objects.select_for_update().get(name=room_name)
+        data['room'] = room  
+
         date = data['date']
         time_slot = data['time_slot']
         user = request.user
